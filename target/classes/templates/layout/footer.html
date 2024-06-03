@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<body>
+    <footer class="nk-footer cb-footer">
+
+        <div class="container">
+            <div class="nk-gap-3"></div>
+            <div class="row vertical-gap">
+                <div class="nk-gap-2"></div>
+                <div class="col-lg-6">
+                    <div class="nk-widget">
+                        <div class="nk-widget-content">
+                            <div class="row vertical-gap sm-gap">
+                                <div class="col-sm-7">
+                                    <a th:href="@{/main/goBackToHome}" class="nk-nav-logo">
+                                        <i class="d-inline-block align-text-top fa-solid "
+                                            style="color: #f8f9fa; font-size: 2em;">
+                                            <span style="color: #dd163b;font-size: 1.7em;">C</span>ARB<span
+                                                style="color: #dd163b;font-size: 1.5em;">O</span><span
+                                                style="color: #dd163b;">2</span>
+                                        </i>
+                                    </a>
+                                </div>
+                                <div class="col-sm-5">
+                                    <h4 class="nk-widget-title"><a th:href="@{/gameFront}">遊戲</a></h4>
+                                    <div class="nk-gap-2"></div>
+                                    <h4 class="nk-widget-title"><a href="#">論壇</a></h4>
+                                </div>
+                            </div>
+                            <div class="nk-gap"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="nk-widget">
+                        <div class="row vertical-gap sm-gap">
+                            <div class="col-sm-6">
+                                <h4 class="nk-widget-title">市集</h4>
+                                <div class="nk-gap"></div>
+                                <div class="nk-widget-content">
+                                    <ul class="list-unstyled ms-1">
+                                        <li><a th:href="@{/market}">虛寶交易</a></li>
+                                        <li><a th:href="@{/bonus-shop/main}">獎勵商城</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <h4 class="nk-widget-title">活動</h4>
+                                <div class="nk-gap"></div>
+                                <div class="nk-widget-content">
+                                    <ul class="list-unstyled ms-1">
+                                        <li><a th:href="@{/competitionRegistration}">賽事</a></li>
+                                        <li><a th:href="@{/eventPageAll}">活動總攬</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nk-gap-3"></div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

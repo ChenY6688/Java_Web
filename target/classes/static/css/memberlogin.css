@@ -1,0 +1,60 @@
+.fa-circle-user {
+	font-size: 120px;
+}
+
+
+
+.form-label{
+	color: #000 !important;
+}
+
+.form-check-label{
+	color: #000 !important;
+}
+
+body {
+	height: 100vh;
+	background-image: linear-gradient(to right,rgba(0,0,0,0.4) ,rgba(0,0,0,1)), url("../img/memberLog4.jpg");
+	background-size:auto, 70%;
+  	background-repeat: no-repeat;
+  	overflow: hidden;
+}
+
+
+
+.nextStep {
+	background-color: #dd163b!important;
+	font-weight: bold !important;
+	}
+
+.registrationPage {
+	background-color: #8D99AE !important;
+	font-weight: bold !important;
+}
+
+.oneClick {
+	background-color: #EF233C !important;
+	font-weight: bold !important;
+}
+
+
+.forgetPwd{
+	background-color: #F2542D !important;
+	font-weight: bold !important;
+}
+
+.color-white{
+	color:white;
+}
+
+.mt-80{
+	margin-top:80px;
+}
+
+@media(max-width: 1362px){
+	body{
+	background-image:none;
+	background-color:rgb(39, 39, 39) !important;
+	overflow:scroll;
+	}
+}

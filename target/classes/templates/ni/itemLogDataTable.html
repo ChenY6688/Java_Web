@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<style>
+		table {
+			background-color: rgb(33, 37, 41);
+		}
+
+		table td,
+		table th {
+			max-width: 170px;
+		}
+
+		.tdCenter {
+			text-align: center;
+		}
+
+		.imgBox {
+			width: 100px;
+			height: 100px;
+		}
+
+		.showDesc {
+			cursor: pointer;
+		}
+
+		.section-big {
+			max-width: calc(100% - 42px);
+		}
+
+		.section-small {
+			max-width: calc(100% - 200px);
+		}
+	</style>
+	<title>Game Item</title>
+</head>
+
+<body>
+	<div th:replace="~{layout/navMain}"></div>
+	<div class="d-flex">
+		<div th:replace="~{layout/asideMain}"></div>
+		<div class="w-100 section section-big">
+			<div class="content mt-3">
+				<nav class="navbar navColor">
+					<div class="container-fluid">
+						<a class="navbar-brand link-light" th:href="@{/gameitem}" style="font-size: 30px;">遊戲虛寶</a>
+						<div class="d-flex" role="search">
+							<input class="form-control me-2" type="search" placeholder="查詢" aria-label="Search"
+								name="itemName" id="itemLog_search">
+							<button class="btn btn-outline-warning col-3" type="submit" id="itemLog_search_btn">查詢</button>
+						</div>
+					</div>
+				</nav>
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+                        <a class="nav-link" th:href="@{/gameitem/allGameitem}">查詢全部</a>
+                    </li>
+                    <li class="nav-item">
+						<a class="nav-link" th:href="@{/gameitem/allOrder}">虛寶訂單</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" th:href="@{/gameitem/allItemLog}">虛寶倉庫</a>
+					</li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/gameitem/newGameitem}">新增</a>
+                    </li>
+				</ul>
+			</div>
+			<div class="container-fluid">
+				<div class="row my-3">
+					<table id="itemLog_table" class="hover row-border" style="width:100%">
+						<thead>
+							<tr>
+								<th>編號</th>
+								<th>會員</th>
+								<th>訂單編號</th>
+								<th>道具</th>
+								<th>數量變化</th>
+								<th>總數量</th>
+								<th>時間</th>
+							</tr>
+						</thead>
+
+						<tbody id="showSeachItem">
+							<th:block th:each="log : ${logs}">
+								<tr>
+									<td class="tdCenter">[[${log.id}]]</td>
+									<td>
+										<span class="me-3">[[${log.memberId}]]</span>
+										<span>[[${log.member.memberName}]]</span>
+									</td>
+									<td>[[${log.ordId}]]</td>
+									<td>
+										<span class="me-3">[[${log.itemId}]]</span>
+										<span>[[${log.gameItem.itemName}]]</span>
+									</td>
+									<td>[[${log.quantity}]]</td>
+									<td>[[${log.total}]]</td>
+									<td th:text="${log} ? ${#dates.format(log.createTime, 'yyyy/MM/dd HH:mm:ss')}">
+									</td>
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		$(function () {
+			////////// dataTable //////////
+			$('#itemLog_table').DataTable({
+				scrollX: true,
+				"dom": 'lrtip'
+			});
+		
+			////////// showDesc //////////
+			$('.showDesc').on('click', function () {
+				$(this).toggleClass('text-truncate');
+			});
+
+			////////// Datatables find by name  //////////
+			$('#itemLog_search').on('keyup', function () {
+				console.log($(this).val());
+				let thisval = $(this).val()
+				$('#itemLog_table').DataTable()
+					.search(thisval)
+					.draw();
+			})
+		})
+	</script>
+</body>
+
+</html>

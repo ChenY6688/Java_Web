@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>賽事報名</title>
+	<link rel="stylesheet" th:href="@{/css/style-c.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+
+<body style="color: black;">
+	<div th:replace="${session.memberBeans} ? ~{layout/navHomeLogin} : ~{layout/navHome} "></div>
+	<div class="contentBox">
+		<div class="content" style="width:400px">
+			<header>賽事報名</header>
+			<div class="pgbar">
+				<div class="step">
+					<p>
+						基本資訊
+					</p>
+					<div class="bullet">
+						<span>1</span>
+					</div>
+					<div class="check fas fa-check"></div>
+				</div>
+				<div class="step">
+					<p>
+						參賽資訊
+					</p>
+					<div class="bullet">
+						<span>2</span>
+					</div>
+					<div class="check fas fa-check"></div>
+				</div>
+				<div class="step">
+					<p>
+						聯絡方式
+					</p>
+					<div class="bullet">
+						<span>3</span>
+					</div>
+					<div class="check fas fa-check"></div>
+				</div>
+				<div class="step">
+					<p>
+						確認送出
+					</p>
+					<div class="bullet">
+						<span>4</span>
+					</div>
+					<div class="check fas fa-check"></div>
+				</div>
+			</div>
+			<div class="form-outer">
+				<form id="registrationForm" method="post" th:action="@{/competitionRegistration/insert}">
+					<div class="page slide-page">
+						<div class="title">
+							Basic Info:
+						</div>
+						<div class="field">
+							<div class="label">
+								賽事名稱
+							</div>
+							<p style="font-size: 30px;font-weight:bold;" th:text="${competition.name}"></p>
+                      		<input type="hidden" name="competitionId" th:value="${competition.competitionId}" />
+                      		<input type="hidden" name="memberId" th:value="${session.memberBeans?.id}" />
+						</div>
+						<div class="field">
+							<div class="label">
+								真實姓名
+							</div>
+							<input type="text" name="realName" required></input>
+							<span class="required-label"></span>
+						</div>
+						<div class="field">
+							<button class="firstNext next">下一步</button>
+						</div>
+					</div>
+					<div class="page">
+						<div class="title">
+							Entry Info:
+						</div>
+						<div class="field">
+							<div class="label">
+								遊戲暱稱
+							</div>
+							<input type="text" name="gameNickname" required>
+							<span class="required-label"></span>
+						</div>
+						<div class="field">
+							<div class="label">
+								隊伍名稱(選填)
+							</div>
+							<input type="text" name="teamName">
+						</div>
+						<div class="field btns">
+							<button class="prev-1 prev">上一步</button>
+							<button class="next-1 next">下一步</button>
+						</div>
+					</div>
+					<div class="page">
+						<div class="title">
+							Contact Info:
+						</div>
+						<div class="field">
+							<div class="label">
+								行動電話
+							</div>
+							<input type="text" name="phone" th:value="${member} ? ${member.phone}" required>
+							<span class="required-label"></span>
+						</div>
+						<div class="field">
+							<div class="label">
+								電子信箱
+							</div>
+							<input type="text" name="email" th:value="${member} ? ${member.email}" required>
+							<span class="required-label"></span>
+						</div>
+						<div class="field btns">
+							<button class="prev-2 prev">上一步</button>
+							<button class="next-2 next">下一步</button>
+						</div>
+					</div>
+					<div class="page">
+						<div class="title">
+							Confirmed:
+						</div>
+						<div class="field">
+							<div class="label">
+	                            報名費
+	                        </div>
+					        <th:block th:switch="${session.memberBeans?.id} != null">
+					            <p th:case="${true}" style="font-size: 30px;font-weight:bold;" th:text="${competition} ? ${competition.fee}-50"></p>
+					            <p th:case="${false}" style="font-size: 30px;font-weight:bold;" th:text="${competition} ? ${competition.fee}"></p>
+					        </th:block>
+						</div>
+
+						<div class="field btns">
+							<button class="prev-3 prev">上一步</button>
+							<button class="submit">確認送出</button>
+						</div>
+					</div>
+			</div>
+			</form>
+		</div>
+	</div>
+	<script>
+		const slidePage = document.querySelector(".slide-page");
+		const nextBtnFirst = document.querySelector(".firstNext");
+		const prevBtnSec = document.querySelector(".prev-1");
+		const nextBtnSec = document.querySelector(".next-1");
+		const prevBtnThird = document.querySelector(".prev-2");
+		const nextBtnThird = document.querySelector(".next-2");
+		const prevBtnFourth = document.querySelector(".prev-3");
+		const submitBtn = document.querySelector(".submit");
+		const progressText = document.querySelectorAll(".step p");
+		const progressCheck = document.querySelectorAll(".step .check");
+		const bullet = document.querySelectorAll(".step .bullet");
+		let current = 1;
+
+		nextBtnFirst.addEventListener("click", function (event) {
+			event.preventDefault();
+			const currentPage = document.querySelector(".page:nth-child(" + current + ")");
+			const inputs = currentPage.querySelectorAll("input[required]");
+			let isValid = true;
+
+			inputs.forEach((input) => {
+				if (!input.value) {
+					isValid = false;
+					let requiredLabel = input.nextElementSibling;
+					requiredLabel.textContent = "此欄位為必填";
+					requiredLabel.style.display = "block";
+				} else {
+					let requiredLabel = input.nextElementSibling;
+					requiredLabel.style.display = "none";
+				}
+			});
+
+			if (isValid) {
+				slidePage.style.marginLeft = "-25%";
+				bullet[current - 1].classList.add("active");
+				progressCheck[current - 1].classList.add("active");
+				progressText[current - 1].classList.add("active");
+				current += 1;
+			}
+		});
+
+		nextBtnSec.addEventListener("click", function (event) {
+			event.preventDefault();
+			const currentPage = document.querySelector(".page:nth-child(" + current + ")");
+			const inputs = currentPage.querySelectorAll("input[required]");
+			let isValid = true;
+
+			inputs.forEach((input) => {
+				if (!input.value) {
+					isValid = false;
+					const requiredLabel = input.nextElementSibling;
+					requiredLabel.textContent = "此欄位為必填";
+					requiredLabel.style.display = "block";
+				} else {
+					const requiredLabel = input.nextElementSibling;
+					requiredLabel.style.display = "none";
+				}
+			});
+
+			if (isValid) {
+				slidePage.style.marginLeft = "-50%";
+				bullet[current - 1].classList.add("active");
+				progressCheck[current - 1].classList.add("active");
+				progressText[current - 1].classList.add("active");
+				current += 1;
+			}
+		});
+
+		nextBtnThird.addEventListener("click", function (event) {
+			event.preventDefault();
+			const currentPage = document.querySelector(".page:nth-child(" + current + ")");
+			const inputs = currentPage.querySelectorAll("input[required]");
+			let isValid = true;
+
+			inputs.forEach((input) => {
+				if (!input.value) {
+					isValid = false;
+					const requiredLabel = input.nextElementSibling;
+					requiredLabel.textContent = "此欄位為必填";
+					requiredLabel.style.display = "block";
+				} else {
+					const requiredLabel = input.nextElementSibling;
+					requiredLabel.style.display = "none";
+				}
+			});
+
+			if (isValid) {
+				slidePage.style.marginLeft = "-75%";
+				bullet[current - 1].classList.add("active");
+				progressCheck[current - 1].classList.add("active");
+				progressText[current - 1].classList.add("active");
+				current += 1;
+			}
+		});
+
+		submitBtn.addEventListener("click", function () {
+			if (validatePage(current)) {
+				bullet[current - 1].classList.add("active");
+				progressCheck[current - 1].classList.add("active");
+				progressText[current - 1].classList.add("active");
+				current += 1;
+				setTimeout(function () {
+					alert("報名成功！");
+					location.reload();
+				}, 800);
+			}
+		});
+
+		prevBtnSec.addEventListener("click", function (event) {
+			event.preventDefault();
+			slidePage.style.marginLeft = "0%";
+			bullet[current - 2].classList.remove("active");
+			progressCheck[current - 2].classList.remove("active");
+			progressText[current - 2].classList.remove("active");
+			current -= 1;
+		});
+
+		prevBtnThird.addEventListener("click", function (event) {
+			event.preventDefault();
+			slidePage.style.marginLeft = "-25%";
+			bullet[current - 2].classList.remove("active");
+			progressCheck[current - 2].classList.remove("active");
+			progressText[current - 2].classList.remove("active");
+			current -= 1;
+		});
+
+		prevBtnFourth.addEventListener("click", function (event) {
+			event.preventDefault();
+			slidePage.style.marginLeft = "-50%";
+			bullet[current - 2].classList.remove("active");
+			progressCheck[current - 2].classList.remove("active");
+			progressText[current - 2].classList.remove("active");
+			current -= 1;
+		});
+
+
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" th:href="@{/css/memberDataTable.css}">
+	</link>
+	<title>Member</title>
+</head>
+
+<body>
+	<div th:replace="~{layout/navMain}"></div>
+	<div class="d-flex">
+		<div th:replace="~{layout/asideMain}"></div>
+		<div class="w-100 section section-big">
+			<div class="content mt-3">
+				<nav class="navbar navColor">
+					<div class="container-fluid">
+						<a class="navbar-brand link-light" th:href="@{/member}" style="font-size: 30px;">會員管理系統</a>
+						<div class="d-flex col-3" role="search">
+							<input class="form-control me-2" type="search" placeholder="會員姓名查詢" aria-label="Search"
+								name="memberName" id="memberName_search">
+							<button class="btn btn-outline-warning col-2" type="submit" id="name_search_btn">查詢</button>
+						</div>
+					</div>
+				</nav>
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<a class="nav-link active" th:href="@{/member/allMember}">搜尋全部</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/member/memberRegistrationDateAnalysisPage}">分析</a>
+					</li>
+				</ul>
+			</div>
+			<div class="container-fluid">
+				<div class="row my-3">
+					<table id="example" class="hover row-border" style="width:100%">
+						<thead>
+							<tr>
+								<th>id</th>
+								<th>帳號</th>
+								<th>信箱</th>
+								<th>密碼</th>
+								<th>姓名</th>
+								<th>生日</th>
+								<th>性別</th>
+								<th>電話</th>
+								<th>身分</th>
+								<th>帳戶</th>
+								<th>註冊日期</th>
+								<th>狀態</th>
+								<th>更新</th>
+								<th>凍結/復原</th>
+							</tr>
+						</thead>
+						<tbody id="showSeachName">
+							<th:block th:each="member : ${members}">
+								<tr>
+									<td th:id="id + ${member.id}">[[${member.id}]]</td>
+									<td>[[${member.userId}]]</td>
+									<td style="overflow:hidden;">[[${member.email}]]</td>
+									<td style="overflow:hidden;">[[${member.memberPwd}]]</td>
+									<td>[[${member.memberName}]]</td>
+									<td th:text="${member} ? ${#dates.format(member.birthday, 'yyyy-MM-dd')}">
+									</td>
+									<td th:text="${member.gender} eq 1? '男': '女'"></td>
+									<td>[[${member.phone}]]</td>
+									<td th:text="${member.levelId} eq 1? '使用者': '管理者'"></td>
+									<td>[[${member.account}]]</td>
+									<td th:text="${member} ? ${#dates.format(member.registrationDate, 'yyyy-MM-dd')}">
+									</td>
+									<th:block th:switch="${member.status}">
+										<td th:case="1" th:text="正常"></td>
+										<td th:case="2" th:text="凍結"></td>
+										<td th:case="3" th:text="未驗證"></td>
+									</th:block>
+
+									<th:block th:if="${member.status==1}">
+										<td>
+											<button th:data-id="${member.id}" class="btn btn-info btn-update"
+												data-bs-toggle="modal" data-bs-target="#exampleModal">更新
+											</button>
+										</td>
+										<td>
+											<button th:data-id="${member.id}"
+												class="btn btn-outline-success btn-restore" hidden=true>復原
+											</button>
+											<button th:data-id="${member.id}" class="btn btn-danger btn-delete">凍結
+											</button>
+										</td>
+									</th:block>
+									<th:block th:unless="${member.status==1}">
+										<td>
+											<button th:data-id="${member.id}" class="btn btn-info btn-update"
+												data-bs-toggle="modal" data-bs-target="#exampleModal" hidden=true>更新
+											</button>
+										</td>
+										<td>
+											<button th:data-id="${member.id}" class="btn btn-danger btn-delete"
+												hidden=true>凍結</button>
+											<button th:data-id="${member.id}"
+												class="btn btn-outline-success btn-restore">復原
+											</button>
+										</td>
+									</th:block>
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" tabindex="-1" id="exampleModal" aria-labelledby="id_email" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title text-dark" id="idEmail"></h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form class="row g-3">
+						<input type="text" class="form-control" id="modalId" hidden=true>
+						<input type="text" class="form-control" id="modalEmail" hidden=true>
+						<div class="col-md-6">
+							<label for="userId" class="form-label text-dark">帳號</label>
+							<input type="text" class="form-control" id="userId">
+						</div>
+						<div class="col-md-6">
+							<label for="memberPwd" class="form-label text-dark">密碼</label>
+							<input type="password" class="form-control" id="memberPwd">
+						</div>
+						<div class="col-12">
+							<label for="memberName" class="form-label text-dark">姓名</label>
+							<input type="text" class="form-control" id="memberName">
+						</div>
+						<div class="col-12">
+							<label for="birthday" class="form-label text-dark">生日</label>
+							<input type="date" class="form-control" id="birthday" value="1911-01-01">
+						</div>
+						<div class="col-12">
+							<label for="phone" class="form-label text-dark">電話</label>
+							<input type="text" class="form-control" id="phone" readonly>
+						</div>
+						<div class="col-12">
+							<label for="account" class="form-label text-dark">帳戶</label>
+							<input type="text" class="form-control" id="account">
+						</div>
+						<div class="col-6">
+							<label for="registration" class="form-label text-dark">註冊日期</label>
+							<input type="date" class="form-control" id="registration" value="1911-01-01">
+						</div>
+						<div class="col-md-3">
+							<label for="gender" class="form-label text-dark">性別</label>
+							<select id="gender" class="form-select">
+								<option selected value="1">男</option>
+								<option value="2">女</option>
+							</select>
+						</div>
+						<div class="col-md-3">
+							<label for="level" class="form-label text-dark">身分</label>
+							<select id="level" class="form-select">
+								<option selected value="1">使用者</option>
+								<option value="2">VIP</option>
+								<option value="100">管理者</option>
+							</select>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary col-4" id="update" data-bs-dismiss="modal">更新</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script th:src="@{/js/memberDataTable.js}"></script>
+</body>
+
+</html>

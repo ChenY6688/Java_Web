@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Carbon</title>
+	<link th:href="@{/css/bonus-shop.css}" rel="stylesheet">
+	<style>
+
+	</style>
+</head>
+
+<body>
+	<div th:replace="${session.memberBeans} ? ~{layout/navHomeLogin} : ~{layout/navHome} "></div>
+	<section class="my-4">
+		<div class="container">
+
+			<section class="recent-game-section">
+				<div class="container">
+
+					<div class="section_header">
+						<div class="section_header_title text-main">個人圖示</div>
+						<div class="section_header_action">
+							<a th:href="@{/bonus-shop/allAvatar}">
+								<button
+									class="header_actionbutton nk-btn nk-btn-rounded nk-btn-color-main-1">查看全部</button>
+							</a>
+						</div>
+						<div class="section_header_line"></div>
+						<div class="actions_LRbutton" id="avatar-LRbutton">
+							
+						</div>
+					</div>
+
+					<div class="section_body">
+						<div class="section_body_row" id="avatar_body">
+
+						</div>
+					</div>
+
+				</div>
+			</section>
+
+		</div>
+	</section>
+	<section class="my-4">
+		<div class="container">
+
+			<section class="recent-game-section">
+				<div class="container">
+
+					<div class="section_header">
+						<div class="section_header_title text-main">裝飾外框</div>
+						<div class="section_header_action">
+							<a th:href="@{/bonus-shop/allFrame}">
+								<button
+									class="header_actionbutton nk-btn nk-btn-rounded nk-btn-color-main-1">查看全部</button>
+							</a>
+						</div>
+						<div class="section_header_line"></div>
+						<div class="actions_LRbutton" id="frame-LRbutton">
+							
+						</div>
+					</div>
+
+					<div class="section_body">
+						<div class="section_body_row" id="frame_body">
+
+						</div>
+					</div>
+
+				</div>
+			</section>
+
+		</div>
+	</section>
+	<section class="my-4">
+		<div class="container">
+
+			<section class="recent-game-section spad set-bg" data-setbg="img/recent-game-bg.png">
+				<div class="container">
+
+					<div class="section_header">
+						<div class="section_header_title text-main">個人圖示背景</div>
+						<div class="section_header_action">
+							<a th:href="@{/bonus-shop/allBackground}">
+								<button
+									class="header_actionbutton nk-btn nk-btn-rounded nk-btn-color-main-1">查看全部</button>
+							</a>
+						</div>
+						<div class="section_header_line"></div>
+						<div class="actions_LRbutton" id="bg-LRbutton">
+							
+						</div>
+					</div>
+
+					<div class="section_body">
+						<div class="section_body_row" id="bg_body">
+
+
+						</div>
+					</div>
+
+				</div>
+			</section>
+
+		</div>
+	</section>
+
+
+	<div th:replace="~{layout/footer}"></div>
+
+
+
+
+	<script th:src="@{/js/bonusShop.js}"></script>
+
+
+</body>
+
+</html>
